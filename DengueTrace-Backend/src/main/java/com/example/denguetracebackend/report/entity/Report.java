@@ -1,4 +1,4 @@
-package com.example.denguetracebackend.entity;
+package com.example.denguetracebackend.report.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

@@ -1,6 +1,6 @@
-package com.example.denguetracebackend.repository;
+package com.example.denguetracebackend.report.repository;
 
-import com.example.denguetracebackend.entity.Report;
+import com.example.denguetracebackend.report.entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -42,8 +42,7 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
@@ -78,6 +77,8 @@ public class SecurityConfig {
                         .requestMatchers("GET", "/api/v1/news/**").permitAll()
                         .requestMatchers("GET", "/api/v1/predictive-models/**").permitAll()
                         .requestMatchers("GET", "/api/v1/alerts/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/reports/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())

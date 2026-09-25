@@ -43,7 +43,9 @@ public class AlertCreatedEventListener {
             Notification notification = Notification.builder()
                     .alert(alert)
                     .user(user)
-                    .channel(user.getPreferredChannel() != null ? user.getPreferredChannel() : NotificationChannel.PUSH)
+                    .channel(user.getPreferredChannel() != null
+                            ? user.getPreferredChannel()
+                            : NotificationChannel.PUSH)
                     .status(NotificationStatus.SENT)
                     .sentAt(LocalDateTime.now())
                     .build();
