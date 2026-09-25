@@ -1,6 +1,5 @@
 package com.example.denguetracebackend.common.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -48,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-        } catch (ExpiredJwtException | JwtException ignored) {
+        } catch (JwtException ignored) {
             // Invalid/expired token: request proceeds unauthenticated, Spring Security will reject protected routes
         }
 

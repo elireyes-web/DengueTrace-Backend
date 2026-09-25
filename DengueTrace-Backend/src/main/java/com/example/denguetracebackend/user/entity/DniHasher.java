@@ -1,4 +1,4 @@
-package com.example.denguetracebackend.entity;
+package com.example.denguetracebackend.user.entity;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

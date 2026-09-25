@@ -1,7 +1,7 @@
-package com.example.denguetracebackend.service;
+package com.example.denguetracebackend.report.service;
 
-import com.example.denguetracebackend.entity.Report;
-import com.example.denguetracebackend.repository.ReportRepository;
+import com.example.denguetracebackend.report.entity.Report;
+import com.example.denguetracebackend.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
