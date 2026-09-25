@@ -1,11 +1,13 @@
 package com.example.denguetracebackend.controller;
 
+import com.example.denguetracebackend.repository.UsuarioRepository;
 import com.example.denguetracebackend.entity.Report;
 import com.example.denguetracebackend.service.ReportService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +18,14 @@ import java.util.List;
 public class ReportController {
 
     private final ReportService reportService;
+     private final UsuarioRepository usuarioRepository;
 
     @PostMapping
-    public ResponseEntity<Report> createReport(@Valid @RequestBody Report report) {
+    public ResponseEntity<Report> createReport(@Valid @RequestBody Report report, Authentication auth) {
+        Long usuarioId = usuarioRepository.findByEmail(auth.getName())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"))
+                .getId();
+        report.setUsuarioId(usuarioId);
         Report saved = reportService.createReport(report);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
