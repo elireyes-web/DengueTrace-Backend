@@ -2,6 +2,7 @@ package com.example.denguetracebackend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,9 +20,9 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El DNI del reportante es obligatorio")
-    @Column(name = "reporter_dni", nullable = false, length = 8)
-    private String reporterDni;
+    @NotNull(message = "El usuario reportante es obligatorio")
+    @Column(name = "usuario_id", nullable = false)
+    private Long usuarioId;
 
     @NotBlank(message = "El distrito es obligatorio")
     @Column(nullable = false)
@@ -42,4 +43,3 @@ public class Report {
         this.createdAt = LocalDateTime.now();
     }
 }
-
