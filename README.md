@@ -224,7 +224,7 @@ El backend está desplegado y disponible públicamente en:
 
 **URL:**
 
----
+--- denguetrace-backend-production.up.railway.app
 ## Licencia
 Este proyecto está bajo la licencia **MIT**. Ver el archivo [LICENSE](./LICENSE) para más detalles.
 
