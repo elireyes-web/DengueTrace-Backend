@@ -1,6 +1,7 @@
 package com.example.denguetracebackend.report.service;
 
 import com.example.denguetracebackend.common.exception.ResourceNotFoundException;
+import com.example.denguetracebackend.common.integration.maps.GoogleMapsGeocodingService;
 import com.example.denguetracebackend.district.entity.District;
 import com.example.denguetracebackend.district.repository.DistrictRepository;
 import com.example.denguetracebackend.report.dto.ReportRequestDTO;
@@ -22,6 +23,7 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
     private final DistrictRepository districtRepository;
+    private final GoogleMapsGeocodingService geocodingService;
 
     @Transactional
     public ReportResponseDTO createReport(
@@ -38,14 +40,7 @@ public class ReportService {
                         )
                 );
 
-        District district = districtRepository
-                .findById(request.districtId())
-                .orElseThrow(() ->
-                        ResourceNotFoundException.of(
-                                "District",
-                                request.districtId()
-                        )
-                );
+        District district = resolveDistrict(request);
 
         Report report = Report.builder()
                 .user(user)
@@ -55,9 +50,84 @@ public class ReportService {
                 .symptoms(request.symptoms())
                 .build();
 
-        Report savedReport = reportRepository.save(report);
+        Report savedReport =
+                reportRepository.save(report);
 
         return toResponse(savedReport);
+    }
+
+    private District resolveDistrict(
+            ReportRequestDTO request
+    ) {
+
+        /*
+         * Caso 1:
+         * El frontend/Postman ya conoce districtId.
+         */
+        if (request.districtId() != null) {
+
+            return districtRepository
+                    .findById(request.districtId())
+                    .orElseThrow(() ->
+                            ResourceNotFoundException.of(
+                                    "District",
+                                    request.districtId()
+                            )
+                    );
+        }
+
+        /*
+         * Caso 2:
+         * No hay districtId, usamos las coordenadas.
+         */
+        if (
+                request.latitude() == null
+                        || request.longitude() == null
+        ) {
+
+            throw new IllegalArgumentException(
+                    "districtId or latitude/longitude are required"
+            );
+        }
+
+        var address =
+                geocodingService.reverseGeocode(
+                                request.latitude(),
+                                request.longitude()
+                        )
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "Unable to determine district from coordinates"
+                                )
+                        );
+
+        /*
+         * Buscamos si el distrito ya existe.
+         */
+        return districtRepository
+                .findByNameIgnoreCaseAndDepartmentIgnoreCase(
+                        address.district(),
+                        address.department()
+                )
+                .orElseGet(() ->
+                        createDistrict(address)
+                );
+    }
+
+    private District createDistrict(
+            GoogleMapsGeocodingService.AddressResult address
+    ) {
+
+        District district = District.builder()
+                .name(address.district())
+                .province(address.province())
+                .department(address.department())
+                .population(null)
+                .latitude(address.latitude())
+                .longitude(address.longitude())
+                .build();
+
+        return districtRepository.save(district);
     }
 
     @Transactional(readOnly = true)
@@ -84,7 +154,9 @@ public class ReportService {
     ) {
 
         return reportRepository
-                .findByDistrict_NameIgnoreCase(districtName)
+                .findByDistrict_NameIgnoreCase(
+                        districtName
+                )
                 .stream()
                 .map(this::toResponse)
                 .toList();

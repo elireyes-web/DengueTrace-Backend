@@ -3,12 +3,10 @@ package com.example.denguetracebackend.report.dto;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record ReportRequestDTO(
 
-        @NotNull(message = "District is required")
         Long districtId,
 
         @DecimalMin(
