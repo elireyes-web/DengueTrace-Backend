@@ -13,17 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 
-/**
- * Initializes Firebase Admin SDK for push notifications (FCM).
- *
- * The service account JSON is NEVER stored in the repo. It is passed as a
- * Base64-encoded environment variable (FIREBASE_CREDENTIALS_BASE64).
- * See PATCH_NOTES.md for how to generate and set it.
- *
- * If the variable is missing (e.g. local dev without Firebase set up), this
- * silently skips initialization instead of crashing the whole application,
- * so the rest of the backend keeps working and push simply won't be sent.
- */
+
 @Configuration
 @Slf4j
 public class FirebaseConfig {

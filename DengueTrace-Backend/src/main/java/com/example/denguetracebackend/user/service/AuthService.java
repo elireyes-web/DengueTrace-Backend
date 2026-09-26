@@ -78,16 +78,26 @@ public class AuthService {
     }
 
     public AuthResponseDTO refresh(String refreshToken) {
-        String email = jwtUtil.extractEmail(refreshToken);
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new InvalidCredentialsException("Invalid refresh token"));
+        try {
+            if (!"refresh".equals(jwtUtil.extractType(refreshToken))) {
+                throw new InvalidCredentialsException("Not a refresh token");
+            }
 
-        if (!jwtUtil.isTokenValid(refreshToken, email)) {
-            throw new InvalidCredentialsException("Refresh token expired or invalid");
+            String email = jwtUtil.extractEmail(refreshToken);
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new InvalidCredentialsException("Invalid refresh token"));
+
+            if (!jwtUtil.isTokenValid(refreshToken, email)) {
+                throw new InvalidCredentialsException("Refresh token expired or invalid");
+            }
+
+            String newAccessToken = jwtUtil.generateAccessToken(user.getId(), user.getEmail(), user.getAuthorities().stream().toList());
+            String newRefreshToken = jwtUtil.generateRefreshToken(user.getId(), user.getEmail());
+            return new AuthResponseDTO(newAccessToken, newRefreshToken, UserMapper.toResponse(user));
+        } catch (InvalidCredentialsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InvalidCredentialsException("Invalid refresh token");
         }
-
-        String newAccessToken = jwtUtil.generateAccessToken(user.getId(), user.getEmail(), user.getAuthorities().stream().toList());
-        String newRefreshToken = jwtUtil.generateRefreshToken(user.getId(), user.getEmail());
-        return new AuthResponseDTO(newAccessToken, newRefreshToken, UserMapper.toResponse(user));
     }
 }

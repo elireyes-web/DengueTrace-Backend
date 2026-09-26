@@ -67,6 +67,10 @@ public class JwtUtil {
         return extractEmail(token).equals(email) && !isTokenExpired(token);
     }
 
+    public String extractType(String token) {
+        return extractClaim(token, claims -> claims.get("type", String.class));
+    }
+
     public boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
@@ -79,4 +83,5 @@ public class JwtUtil {
     private Claims extractAllClaims(String token) {
         return Jwts.parser().verifyWith(key()).build().parseSignedClaims(token).getPayload();
     }
+
 }

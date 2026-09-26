@@ -66,7 +66,7 @@ public class GdeltNewsService {
 
     private LocalDateTime parseDate(String raw) {
         try {
-            return raw == null ? LocalDateTime.now() : java.time.LocalDateTime.parse(raw, GDELT_DATE);
+            return raw == null ? LocalDateTime.now() : LocalDateTime.parse(raw, GDELT_DATE);
         } catch (Exception e) {
             return LocalDateTime.now();
         }
