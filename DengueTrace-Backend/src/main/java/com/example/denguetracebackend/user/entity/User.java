@@ -49,6 +49,14 @@ public class User implements UserDetails {
     @Column(length = 20)
     private String phone;
 
+    /**
+     * Firebase Cloud Messaging device token, registered by the mobile client
+     * so we can actually deliver PUSH notifications (previously missing:
+     * there was no way to reach a device, so alerts always fell back to email).
+     */
+    @Column(length = 255)
+    private String fcmToken;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "district_id")
     private District district;

@@ -29,4 +29,16 @@ public class NewsController {
     public ResponseEntity<NewsResponseDTO> create(@Valid @RequestBody NewsRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(newsService.create(request));
     }
+
+    /**
+     * Triggers a real fetch of dengue-related articles from GDELT for this district
+     * and stores the new ones. Runs asynchronously; the endpoint returns immediately
+     * with 202 Accepted since the actual save happens in the background.
+     */
+    @PostMapping("/district/{districtId}/sync")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> syncFromGdelt(@PathVariable Long districtId) {
+        newsService.syncFromGdelt(districtId);
+        return ResponseEntity.accepted().build();
+    }
 }

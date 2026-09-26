@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    List<Report> findByDistrict(String district);
-    List<Report> findByUsuarioId(Long usuarioId);
+
+    List<Report> findByDistrict_NameIgnoreCase(String districtName);
+
+    List<Report> findByUser_Id(Long userId);
 }

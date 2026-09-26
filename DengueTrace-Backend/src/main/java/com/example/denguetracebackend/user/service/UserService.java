@@ -36,6 +36,7 @@ public class UserService {
         if (request.phone() != null) user.setPhone(request.phone());
         if (request.preferredChannel() != null) user.setPreferredChannel(request.preferredChannel());
         if (request.alertRadiusKm() != null) user.setAlertRadiusKm(request.alertRadiusKm());
+        if (request.fcmToken() != null) user.setFcmToken(request.fcmToken());
         if (request.districtId() != null) {
             District district = districtRepository.findById(request.districtId())
                     .orElseThrow(() -> ResourceNotFoundException.of("District", request.districtId()));

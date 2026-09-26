@@ -12,5 +12,6 @@ public record UserResponseDTO(
         String districtName,
         Role role,
         NotificationChannel preferredChannel,
-        Integer alertRadiusKm
+        Integer alertRadiusKm,
+        boolean pushRegistered
 ) {}
