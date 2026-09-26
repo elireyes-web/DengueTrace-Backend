@@ -135,6 +135,13 @@ src/main/java/com/example/denguetracebackend
 │   │   ├── ResourceNotFoundException
 │   │   ├── TokenExpiredException
 │   │   └── UnauthorizedException
+│   └── integration/
+│   │   ├── gdelt/GdeltNewsService
+│   │   ├── maps/
+│   │   │   ├── GoogleGeolocationServer
+│   │   │   └── GoogleMapsGeocodingService
+│   │   ├── push/FcmPushService
+│   │   └── sms/SmsService
 │   └── security/
 │   │   ├── JwtAuthenticationFilter
 │   │   ├── JwtUtil
@@ -169,6 +176,12 @@ src/main/java/com/example/denguetracebackend
 │   ├── entity/Notification
 │   ├── dto/NotificationResponseDTO
 │   └── repository/NotificationRepository
+├── predictivemodel/
+│   ├── controller/PredictiveModelController
+│   ├── dto/PredictiveModelResponseDTO
+│   ├── entity/PredictiveModel
+│   ├── repository/PredictiveModelRepository
+│   └── service/PredictiveModelService
 ├── report/
 │   ├── controller/ReportController
 │   ├── entity/Report
@@ -198,7 +211,6 @@ src/main/java/com/example/denguetracebackend
 ## Desiciones de Diseño
 1. Se usó JTW para autenticación Stateless
 2. Separación en capas controller/service/repository
-3. Implementación de DTOs
 ---
 ## Equipo
 - Marco Sebastián Ruiz Camarena
