@@ -17,7 +17,8 @@ public final class UserMapper {
                 user.getDistrict() != null ? user.getDistrict().getName() : null,
                 user.getRole(),
                 user.getPreferredChannel(),
-                user.getAlertRadiusKm()
+                user.getAlertRadiusKm(),
+                user.getFcmToken() != null && !user.getFcmToken().isBlank()
         );
     }
 }

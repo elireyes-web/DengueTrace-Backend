@@ -8,5 +8,6 @@ public record UserUpdateRequestDTO(
         String phone,
         Long districtId,
         NotificationChannel preferredChannel,
-        @Min(1) Integer alertRadiusKm
+        @Min(1) Integer alertRadiusKm,
+        String fcmToken
 ) {}

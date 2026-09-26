@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface NewsRepository extends JpaRepository<News, Long> {
     List<News> findByDistrictIdOrderByPublishedAtDesc(Long districtId);
+
+    boolean existsByUrl(String url);
 }
