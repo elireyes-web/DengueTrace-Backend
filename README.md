@@ -202,7 +202,7 @@ src/main/java/com/example/denguetracebackend
 ---
 ## Equipo
 - Marco Sebastián Ruiz Camarena
-- Gabriel Savedra Peralta
+- Gabriel Saavedra Peralta
 - Elí Bernie Reyes Juárez
 - Yamile Valentina Morales Zumaeta
 - Martin Gabriel Talavera Pinto
