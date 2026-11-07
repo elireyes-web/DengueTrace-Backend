@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.denguetracebackend.common.dto.PageResponseDTO;
+
 import java.util.List;
 
 @RestController
@@ -46,6 +48,17 @@ public class ReportController {
 
         return ResponseEntity.ok(
                 reportService.getAllReports()
+        );
+    }
+
+    @GetMapping("/paged")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    public ResponseEntity<PageResponseDTO<ReportResponseDTO>> getPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(
+                reportService.getPaged(page, size)
         );
     }
 
