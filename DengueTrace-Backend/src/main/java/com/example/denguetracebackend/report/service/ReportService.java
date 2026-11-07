@@ -14,6 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.denguetracebackend.common.dto.PageResponseDTO;
+import com.example.denguetracebackend.common.exception.InvalidOperationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 
 @Service
@@ -138,6 +143,31 @@ public class ReportService {
                 .stream()
                 .map(this::toResponse)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponseDTO<ReportResponseDTO> getPaged(
+            int page,
+            int size
+    ) {
+        if (page < 0 || size < 1 || size > 100) {
+            throw new InvalidOperationException(
+                    "page must be >= 0 and size must be between 1 and 100"
+            );
+        }
+
+        var pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("createdAt").descending()
+                        .and(Sort.by("id").descending())
+        );
+
+        var result = reportRepository.findAll(pageable);
+
+        return PageResponseDTO.from(
+                result.map(this::toResponse)
+        );
     }
 
     @Transactional(readOnly = true)
