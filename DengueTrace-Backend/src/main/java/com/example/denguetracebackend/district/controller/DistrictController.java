@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.example.denguetracebackend.common.dto.PageResponseDTO;
 
 import java.util.List;
 
@@ -24,6 +25,16 @@ public class DistrictController {
         return ResponseEntity.ok(districtService.getAll());
     }
 
+    @GetMapping("/paged")
+    public ResponseEntity<PageResponseDTO<DistrictResponseDTO>> getPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search
+    ) {
+        return ResponseEntity.ok(
+                districtService.getPaged(page, size, search)
+        );
+    }
     @GetMapping("/{id}")
     public ResponseEntity<DistrictResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(districtService.getById(id));

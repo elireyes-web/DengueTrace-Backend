@@ -11,6 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.denguetracebackend.common.dto.PageResponseDTO;
+import com.example.denguetracebackend.common.exception.InvalidOperationException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +35,45 @@ public class DistrictService {
 
     public DistrictResponseDTO getById(Long id) {
         return toResponse(findDistrict(id));
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponseDTO<DistrictResponseDTO> getPaged(
+            int page,
+            int size,
+            String search
+    ) {
+        validatePagination(page, size);
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("name").ascending()
+                        .and(Sort.by("id").ascending())
+        );
+
+        Page<District> result;
+
+        if (search == null || search.isBlank()) {
+            result = districtRepository.findAll(pageable);
+        } else {
+            result = districtRepository.findByNameContainingIgnoreCase(
+                    search.trim(),
+                    pageable
+            );
+        }
+
+        return PageResponseDTO.from(
+                result.map(this::toResponse)
+        );
+    }
+
+    private void validatePagination(int page, int size) {
+        if (page < 0 || size < 1 || size > 100) {
+            throw new InvalidOperationException(
+                    "page must be >= 0 and size must be between 1 and 100"
+            );
+        }
     }
 
     @Transactional
