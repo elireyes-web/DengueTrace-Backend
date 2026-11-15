@@ -832,3 +832,8 @@ Este proyecto se distribuye bajo licencia **MIT**.
 [Ver licencia MIT](https://github.com/elireyes-web/DengueTrace-Backend/blob/main/DengueTrace-Backend/LICENSE.txt)
 
 ---
+
+
+## Carga de distritos
+
+El catálogo de distritos se carga en PostgreSQL después de iniciar el backend. Consulta las [instrucciones de carga](DengueTrace-Backend/scripts/carga-distritos/LEEME.md).
