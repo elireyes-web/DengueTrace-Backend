@@ -13,7 +13,7 @@ public final class EmailTemplates {
                   consultar el mapa de riesgo y enviar autorreportes.</p>
                   <p>Equipo DengueTrace</p>
                 </div>
-                """.formatted(fullName);
+                """.formatted(escapeHtml(fullName));
     }
 
     public static String alert(String districtName, String message) {
@@ -24,6 +24,14 @@ public final class EmailTemplates {
                   <p>Por favor toma las medidas preventivas necesarias en tu zona.</p>
                   <p>Equipo DengueTrace</p>
                 </div>
-                """.formatted(districtName, message);
+                """.formatted(escapeHtml(districtName), escapeHtml(message));
+    }
+    private static String escapeHtml(String value) {
+        return (value == null ? "" : value)
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
     }
 }

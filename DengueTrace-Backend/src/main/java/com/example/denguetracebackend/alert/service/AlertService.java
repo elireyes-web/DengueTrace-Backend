@@ -38,7 +38,7 @@ public class AlertService {
 
         Alert saved = alertRepository.save(alert);
         // Triggers async notification dispatch (push/SMS/email) to every user registered in the district.
-        eventPublisher.publishEvent(new AlertCreatedEvent(this, saved));
+        eventPublisher.publishEvent(new AlertCreatedEvent(this, saved.getId()));
 
         return toResponse(saved);
     }
